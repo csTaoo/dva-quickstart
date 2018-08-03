@@ -1,4 +1,6 @@
 import {routerRedux} from 'dva/router';
+import {login} from '../services/loginService';
+
 
 export default {
   namespace : 'app',
@@ -11,9 +13,11 @@ export default {
   },
 
   effects: {
-    *login({ payload }, { call, put }) {  // eslint-disable-line
-      yield put({ type: 'logMes' });
-      yield put(routerRedux.push('./users'));
+    *login({payload }, { call, put }) {  // eslint-disable-line
+      const {data} = yield call(login,payload);
+      if(data.success){
+        yield  put(routerRedux.push('./users'));
+      }
     },
   },
 
@@ -23,7 +27,8 @@ export default {
     },
 
     logMes(state,action){
-      alert('s');
+
+      return {...state,app:{testValue:'tttt'}};
 
     },
   },
